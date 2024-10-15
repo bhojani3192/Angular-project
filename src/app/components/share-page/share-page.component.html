@@ -1,0 +1,306 @@
+<div>
+    <nav>
+        <app-shareheader></app-shareheader>
+    </nav>
+    <div class="content error-page container" *ngIf="!sharedContent">
+        <h2>Post is unavailable or removed</h2>
+    </div>
+</div>
+
+<section class="social-feed-wraper">
+    <div class="container">
+        <div class="row">
+            <div class="content" *ngIf="sharedContent">
+                <div class="title-wraper">
+                    <div>
+                        <h5 class="content-title">{{sharedContent.posts[0]?.postTitle}}</h5>
+                        <p class="content-discription">{{sharedContent.posts[0]?.description}}</p>
+                        <div class="tags" *ngFor="let tags of sharedContent.posts[0]?.tags">
+                            <span>{{tags}}</span>
+                        </div>
+                    </div>
+                    <div style="display: flex;flex-direction: column;gap: 15px;">
+                        <div class="icon-list-wrap">
+                            <div class="bookmark icon-wrap" (click)="openLoginDialog()">
+                                <img src="/assets/images/Bookmark.png" alt="">
+                            </div>
+                            <div class="delete icon-wrap" style="padding: 4px 0px 4px 1px;"
+                                (click)="downloadContentWithWaterMark(sharedContent.posts[0]?.userContentId, sharedContent.posts[0]?.content_URI)"
+                                matTooltip="Download" matTooltipPosition="right">
+                                <mat-icon style="color: #F8F8F8;font-size: 18px;">cloud_download</mat-icon>
+                            </div>
+                        </div>
+                        <span *ngIf="sharedContent.posts[0]?.isTopCategoryContent === true"
+                            matTooltip="Top Category Content">
+                            <img src="/assets/images/category.png" alt="Top Category Content" height="35" width="35">
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="content-player" *ngIf="sharedContent.posts[0]?.feedType === 'Video'; else image">
+
+                    @if(sharedContent.posts[0]?.isContentEncoded === true){
+
+                    <video #videoPlayer id="videoPlayer-1" class="video-js video-player" playsinline preload="auto"
+                        crossorigin="anonymous" poster="{{ sharedContent.posts[0]?.thumbnailURI_Large }}"
+                        (click)="onVideoJSClick('video')" (ended)="onVideoJSEnded()"
+                        style="border-radius: 25px;height: 100%;width: 100%;">
+
+                        <!-- <source src="{{ sharedContent.posts[0]?.encodedHLSUrl }}" type="application/x-mpegURL"> -->
+
+                        <source src="{{ sharedContent.posts[0]?.encodedDASHUrl }}" type="application/dash+xml">
+
+                    </video>
+                    <div #videoPlayBtn class="play-btn" (click)="onVideoJSClick('btn')">
+                        <img src="/assets/images/play-btn.svg" alt="" />
+                    </div>
+
+                    } @else {
+
+                    <video #videoPlayer width="100%" height="100%" (click)="onVideoClick()" (ended)="onVideoEnded()"
+                        style="border-radius: 25px;">
+                        <source src="{{ sharedContent.posts[0]?.content_URI }}" type="video/mp4">
+                    </video>
+                    <div #videoPlayBtn class="play-btn" (click)="onVideoClick()">
+                        <img src="/assets/images/play-btn.svg" alt="" />
+                    </div>
+
+                    }
+
+
+                </div>
+                <ng-template #image>
+                    <div *ngIf="sharedContent.posts[0]?.feedType === 'Image'">
+                        <img class="content-player" src="{{ sharedContent.posts[0]?.content_URI }}" alt=""
+                            width="100%" />
+                    </div>
+                </ng-template>
+
+                <div class="p-15" *ngIf="!loading">
+                    <span class="game-name">{{sharedContent.posts[0]?.gameTitle}}</span><br>
+                    <div class="user-name-wraper">
+                        <div class="uploader-profile">
+                            <img src="{{ sharedContent.posts[0]?.avtar }}" alt="">
+                            <span>{{sharedContent.posts[0]?.fullName}}</span>
+                        </div>
+                        <div>
+                            <button mat-raised-button class="follow-btn" style="color: #00004C;"
+                                (click)="openLoginDialog()">Follow</button>
+                        </div>
+                    </div>
+                    <div class="social-feed-content">
+                        <div class="action-div">
+                            <span class="option" (click)="openLoginDialog()">
+                                <img src="/assets/images/like.png" alt="likes">
+                                <span>{{sharedContent.posts[0]?.likes}}</span>
+                            </span>
+                            <span class="option" (click)="openLoginDialog()">
+                                <img src="/assets/images/dislike.png" alt="likes">
+                                <span>{{sharedContent.posts[0]?.disLikes}}</span>
+                            </span>
+                            <span class="option" (click)="openLoginDialog()">
+                                <img src="/assets/images/views.png" alt="likes">
+                                <span>{{sharedContent.posts[0]?.views}}</span>
+                            </span>
+                            <span class="option" (click)="openLoginDialog()">
+                                <img src="/assets/images/comment.png" alt="likes">
+                                <span>{{sharedContent.posts[0]?.commentsCount}} Reply</span>
+                            </span>
+                        </div>
+                        <div class="date-wraper">
+                            <span class="upload-date">
+                                {{sharedContent.posts[0]?.publishedDate | timeago}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div style="color: #f8f8f8;font-size: 14px;cursor: pointer;">
+                        <span style="color: #8630F4;" (click)="openLoginDialog()">Login </span> to like and comment
+                    </div>
+
+                    <div class="divider">
+                        <mat-divider></mat-divider>
+                    </div>
+
+                    <div class="mobile-comment-wraper">
+                        <div class="comments-div desktop"
+                            *ngFor="let comment of sharedContent.posts[0]?.userContentComments">
+                            <div class="comment">
+                                <div class="comment-info">
+                                    <div class="comment-profile">
+                                        <img src="{{comment.avtar}}" alt="">
+                                        <span>{{comment.fullName}} <span>{{comment.commentTime | timeago}}</span></span>
+                                    </div>
+                                    <div class="action-div">
+                                        <span class="option">
+                                            <img src="/assets/images/Vector.png" alt="likes"
+                                                (click)="openLoginDialog()">
+                                            <span>{{comment.likes}}</span>
+                                        </span>
+                                        <span class="option">
+                                            <img src="/assets/images/dislike.png" alt="likes"
+                                                (click)="openLoginDialog()">
+                                            <span>{{comment.dislikes}}</span>
+                                        </span>
+                                        <span class="option">
+                                            <img src="/assets/images/comment.png" alt="likes"
+                                                (click)="openLoginDialog()">
+                                            <span>{{comment.childComments.length}} Reply</span>
+                                        </span>
+                                        <!-- <span class="option">
+                                        <img src="/assets/images/dots-vertical.png" alt="">
+                                    </span> -->
+                                    </div>
+                                </div>
+                                <div class="comment-discription">
+                                    <div class="comment-text"
+                                        [innerHTML]="comment.commentText | highlightUser:comment.commentTagDetails">
+                                        <!-- {{comment.commentText}} -->
+                                    </div>
+                                    <div class="Reply-btn" (click)="openLoginDialog()" style="cursor: pointer;">
+                                        Reply
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="childcomment-div" *ngIf="comment.childComments.length !== 0">
+                                <div class="childcomment" *ngFor="let childcomment of comment.childComments">
+                                    <div class="comment-info">
+                                        <div class="comment-profile">
+                                            <img src="{{childcomment?.avtar}}" alt="">
+                                            <span>{{childcomment?.fullName}} <span>{{childcomment?.commentTime |
+                                                    timeago}}</span></span>
+                                        </div>
+                                        <div class="action-div">
+                                            <span class="option">
+                                                <img src="/assets/images/Vector.png" alt="likes"
+                                                    (click)="openLoginDialog()">
+                                                <span>{{childcomment?.likes}}</span>
+                                            </span>
+                                            <span class="option">
+                                                <img src="/assets/images/dislike.png" alt="likes"
+                                                    (click)="openLoginDialog()">
+                                                <span>{{childcomment?.dislikes}}</span>
+                                            </span>
+                                            <span class="option">
+                                                <img src="/assets/images/comment.png" alt="likes"
+                                                    (click)="openLoginDialog()">
+                                                <span>{{childcomment?.childComments.length}} <span
+                                                        style="cursor: pointer;"
+                                                        (click)="openLoginDialog()">Reply</span></span>
+                                            </span>
+                                            <!-- <span class="option">
+                                            <img src="/assets/images/dots-vertical.png" alt="">
+                                        </span> -->
+                                        </div>
+                                    </div>
+                                    <div class="comment-discription">
+                                        <div class="comment-text"
+                                            [innerHTML]="comment.commentText | highlightUser:comment.commentTagDetails">
+                                            <!-- {{childcomment?.commentText}} -->
+                                        </div>
+                                        <div class="Reply-btn" (click)="openLoginDialog()">
+                                            Reply
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comments-div mobile"
+                            *ngFor="let comment of sharedContent.posts[0]?.userContentComments">
+                            <div class="comment">
+                                <div class="comment-info">
+                                    <div class="comment-profile">
+                                        <img src="{{comment.avtar}}" alt="">
+                                        <span>{{comment.fullName}} <span>{{comment.commentTime | timeago}}</span></span>
+                                    </div>
+                                    <div class="Reply-btn" (click)="openLoginDialog()" style="cursor: pointer;">
+                                        Reply
+                                    </div>
+                                </div>
+                                <div class="comment-discription">
+                                    <div class="comment-text"
+                                        [innerHTML]="comment.commentText | highlightUser:comment.commentTagDetails">
+                                        <!-- {{comment.commentText}} -->
+                                    </div>
+
+                                </div>
+                                <div class="action-div">
+                                    <span class="option">
+                                        <img src="/assets/images/Vector.png" alt="likes" (click)="openLoginDialog()">
+                                        <span>{{comment.likes}}</span>
+                                    </span>
+                                    <span class="option">
+                                        <img src="/assets/images/dislike.png" alt="likes" (click)="openLoginDialog()">
+                                        <span>{{comment.dislikes}}</span>
+                                    </span>
+                                    <span class="option">
+                                        <img src="/assets/images/comment.png" alt="likes" (click)="openLoginDialog()">
+                                        <span>{{comment.childComments.length}} Reply</span>
+                                    </span>
+                                    <!-- <span class="option">
+                                    <img src="/assets/images/dots-vertical.png" alt="">
+                                </span> -->
+                                </div>
+                            </div>
+                            <div class="childcomment-div" *ngIf="comment.childComments.length !== 0">
+                                <div class="childcomment" *ngFor="let childcomment of comment.childComments">
+                                    <div class="comment-info">
+                                        <div class="comment-profile">
+                                            <img src="{{childcomment?.avtar}}" alt="">
+                                            <span>{{childcomment?.fullName}} <span>{{childcomment?.commentTime |
+                                                    timeago}}</span></span>
+                                        </div>
+                                        <div class="Reply-btn" (click)="openLoginDialog()" style="cursor: pointer;">
+                                            Reply
+                                        </div>
+
+                                    </div>
+                                    <div class="comment-discription">
+                                        <div class="comment-text"
+                                            [innerHTML]="comment.commentText | highlightUser:comment.commentTagDetails">
+                                            <!-- {{childcomment?.commentText}} -->
+                                        </div>
+
+                                    </div>
+                                    <div class="action-div">
+                                        <span class="option">
+                                            <img src="/assets/images/Vector.png" alt="likes"
+                                                (click)="openLoginDialog()">
+                                            <span>{{comment.likes}}</span>
+                                        </span>
+                                        <span class="option">
+                                            <img src="/assets/images/dislike.png" alt="likes"
+                                                (click)="openLoginDialog()">
+                                            <span>{{comment.dislikes}}</span>
+                                        </span>
+                                        <span class="option">
+                                            <img src="/assets/images/comment.png" alt="likes"
+                                                (click)="openLoginDialog()">
+                                            <span>{{comment.childComments.length}} Reply</span>
+                                        </span>
+                                        <!-- <span class="option">
+                                        <img src="/assets/images/dots-vertical.png" alt="">
+                                    </span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div *ngIf="loading" class="overlay"></div>
+<div *ngIf="loading" class="loader">
+    <mat-spinner class="spinner" diameter="40" mode="indeterminate"></mat-spinner>
+    <span class="loding-text">Loading...</span>
+</div>
+<div *ngIf="downloading" class="overlay"></div>
+<div *ngIf="downloading" class="loader">
+    <mat-spinner class="spinner" diameter="40" mode="indeterminate"></mat-spinner>
+    <span class="loding-text">Downloading...</span>
+</div>

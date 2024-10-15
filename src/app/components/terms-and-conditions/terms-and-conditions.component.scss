@@ -1,0 +1,93 @@
+@import '../../scss/variables.scss';
+.navbar{
+    height: 70px;
+    background: linear-gradient(-45.241deg, rgba(255, 255, 255, 10%) 0%, rgba(255, 255, 255, 0%) 100%);
+}
+.nav-div{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 25px;
+    width: 100%;
+    align-items: center;
+}
+.navbar-brand{
+    color: $text-color;
+    font-weight: 800;
+    font-size: 32px;
+    font-family: "Poppins", sans-serif;
+}
+.profile{
+    align-items: center;
+    img{
+        height: 30px;
+        width: 30px;
+        border-radius: 35px;
+    }
+
+    span{
+        color: #F8F8F9;
+        margin-left: 10px;
+    }
+    button{
+        margin-left: 10px;
+    }
+}
+.profile-div{
+    display: inline-block;
+    padding: 0px 20px;
+    img{
+        height: 35px;
+        width: 35px;
+        border-radius: 100%;
+    }
+}
+.username{
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 6px;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #f8f8f8;
+    display: inline-block;
+}
+.profilemenu{
+    font-family: 'Poppins';
+}
+.close-btn{
+    text-align: end;
+    margin-right: -16px;
+    cursor: pointer;
+    mat-icon{
+        color: #F8F8F8;
+    }  
+}
+.Conditions{
+    p{
+        font-size: 20px;
+        color: #F8F8F8;
+        font-weight: 500;
+        margin: 10px 0px;
+    }
+    span{
+        font-size: 14px;
+        color: #F8F8F8;
+        font-weight: 400;
+        padding-bottom: 20px;
+    }
+}
+.tc-btn {
+    margin: 30px 0px;
+    background: $primary-color !important;
+    padding: 0px 20px;
+    width: 355px;
+    height: 40px;
+
+    a {
+        color: $text-color;
+        text-decoration: none;
+
+        span {
+            margin-left: 5px;
+        }
+    }
+}

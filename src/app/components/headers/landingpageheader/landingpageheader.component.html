@@ -1,0 +1,50 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">
+      <a class="navbar-brand" href="#">
+        <img src="/assets/images/dubfeed-logo.svg" alt="DubFeed" />
+      </a>
+    </div>
+    <div class="contenct-wrap">
+      <div>
+        <button mat-raised-button color="primary" class="contact-btn primary-btn" (click)="isShowContactusToggle()">
+          Contact
+        </button>
+        @if(isLogin === false){
+        <button mat-raised-button color="primary" class="contact-btn primary-btn" (click)="openLoginDialog()">
+          Login
+        </button>
+        }
+        @else{
+        <div class="profile-div">
+          <div [matMenuTriggerFor]="beforeMenu" style="cursor: pointer;">
+            <img src="{{userDetail?.avtar ? userDetail?.avtar : '/assets/images/profilepic.png'}}">
+            <div class="username">{{userDetail?.firstName}} {{userDetail?.lastName}}</div>
+          </div>
+          <mat-menu #beforeMenu="matMenu" xPosition="before" class="profile-menu">
+            <button class="profilemenu" mat-menu-item (click)="openQRcode()"><mat-icon>qr_code</mat-icon>Login to
+              device</button>
+            <button class="profilemenu" mat-menu-item (click)="onLogoutClick()"><mat-icon>exit_to_app</mat-icon>Logout</button>
+          </mat-menu>
+        </div>
+        }
+      </div>
+      <div>
+        <div class="join-discord-wrap" *ngIf="isShowContactus">
+          <div class="join-discord">
+            <h5 class="title">Hey there, we'd love to chat!</h5>
+            <p>Please consider joining our discord</p>
+            <div class="link-wrap">
+              <img src="/assets/images/discordlogo.svg" alt="" />
+              <a target="_blank" href="https://discord.gg/wruPh8XPaU" class="link">Join Discord</a>
+              <p>
+                or Send us an email at
+                <a href="mailto:Support@dubfeed.com" class="link">Support&#64;dubfeed.com</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

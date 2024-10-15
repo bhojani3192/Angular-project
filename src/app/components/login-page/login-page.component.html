@@ -1,0 +1,73 @@
+<div class="main-div">
+    <div class="card-bg"></div>
+    <div class="content-div">
+        <div class="info-wrap">
+            <span class="flex">
+                <span style="font-size: 30px;color: #F8F8F8;font-weight: 500;">Hello Again!</span>
+                <span style="color: #F8F8F8;"><mat-icon mat-dialog-close>close</mat-icon></span>
+            </span>
+            <span style="font-size: 20px;color: #F8F8F8;font-weight: 400;">Welcome back you’ve been missed!</span>
+            <span style="font-size: 14px;color: #F8F8F8;font-weight: 400;">Login With your credentiats.</span>
+        </div>
+
+        <div class="form-wrap">
+            <form class="form" [formGroup]="loginForm">
+                <div class="form-field">
+                    <span class="form-label">Email</span>
+                    <input #emailInput type="text" class="form-control custom-placeholder form-input"
+                        placeholder="Email" formControlName="email" />
+                    <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Please enter a valid email
+                        address</mat-error>
+                </div>
+                <div class="form-field">
+                    <span class="form-label">Password</span>
+                    <input [type]="hide ? 'password' : 'text'" type="password"
+                        class="form-control custom-placeholder form-input" placeholder="Your password"
+                        formControlName="password" />
+                    <span class="eye-btn" (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide">
+                        <mat-icon class="padding-12">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </span>
+                    <mat-error *ngIf="loginForm.hasError('passwordStrength')">Please make sure it contains at least 8
+                        characters, including a combination of letters, numbers, and special characters.</mat-error>
+                </div>
+            </form>
+            <div style="display: flex;justify-content: end;cursor: pointer;" (click)="redirectToForgotpassword()">
+                <span style="font-size: 14px;color: #F8F8F8;font-weight: 400;">
+                    Forgot password?
+                </span>
+            </div>
+        </div>
+
+        <div class="btn-group">
+
+            <div>
+                <button mat-raised-button color="primary" class="login-btn primary-btn" [disabled]="loginForm.invalid"
+                    (click)="onLoginClick()">
+                    <a>
+                        <span>Login</span>
+                    </a>
+                </button>
+            </div>
+
+            <div>
+                <button mat-raised-button color="primary" class="xbox-btn primary-btn" (click)="onXboxLoginClick()">
+                    <a>
+                        <img src="/assets/images/Xbox.svg" alt="" />
+                        <span>Login with XBOX</span>
+                    </a>
+                </button>
+            </div>
+            
+        </div>
+
+        <div class="register-info-wrap">
+            <span>Not a member? <span (click)="redirectToSignUp()">Register now</span></span>
+        </div>
+    </div>
+</div>
+<div *ngIf="loading" class="overlay"></div>
+<div *ngIf="loading" class="loader">
+    <mat-spinner class="spinner" diameter="40" mode="indeterminate"></mat-spinner>
+    <span class="loding-text">Loading...</span>
+</div>

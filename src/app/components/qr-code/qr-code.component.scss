@@ -1,0 +1,146 @@
+@import '../../scss/variables.scss';
+.navbar{
+    height: 70px;
+    background: linear-gradient(-45.241deg, rgba(255, 255, 255, 10%) 0%, rgba(255, 255, 255, 0%) 100%);
+}
+.nav-div{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 25px;
+    width: 100%;
+    align-items: center;
+}
+.navbar-brand{
+    color: $text-color;
+    font-weight: 800;
+    font-size: 32px;
+    font-family: "Poppins", sans-serif;
+}
+.profile{
+    align-items: center;
+    img{
+        height: 30px;
+        width: 30px;
+        border-radius: 35px;
+    }
+
+    span{
+        color: #F8F8F9;
+        margin-left: 10px;
+    }
+    button{
+        margin-left: 10px;
+    }
+}
+.profile-div{
+    display: inline-block;
+    padding: 0px 20px;
+    img{
+        height: 35px;
+        width: 35px;
+        border-radius: 100%;
+    }
+}
+.username{
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 6px;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #f8f8f8;
+    display: inline-block;
+}
+.profilemenu{
+    font-family: 'Poppins';
+}
+.close-btn{
+    text-align: end;
+    margin-right: -16px;
+    cursor: pointer;
+    mat-icon{
+        color: #F8F8F8;
+    }  
+}
+.coundown{
+    color: $text-color;
+    display: flex;
+    justify-content: center;
+    font-size: larger;
+    padding: 10px;
+}
+.qr-wrap{
+    background-color: #090D10;
+    width: 100%;
+    border-radius: 19px;
+    display: flex;
+    justify-content: center;
+    .qr-code{
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%);
+        border: 1px solid  rgba(216, 216, 216,42%);
+        border-radius: 19px;
+        padding: 20px 20px 10px 20px;
+        backdrop-filter: blur(18.8px);
+    }
+}
+.info-div{
+    .info-heading{
+       color: $text-color;
+       font-weight: 800;
+       font-size: 46px;
+       text-align: center;
+    }   
+
+    .info-discription{
+       color: $text-color;
+       font-weight: 400;
+       font-size: 16px;
+       margin-top: 10px;
+       margin-bottom: 0;
+       text-align: center;
+    }
+
+   }
+   .btn-group{
+    padding: 25px 0px;
+
+    .download-btn{
+    margin: 0px 10px;
+    background: $primary-color;
+    padding: 0px 20px;
+    // width: 127px;
+    height: 40px;
+    a{
+        color: $text-color;
+        text-decoration: none;
+        span{
+            margin-left: 5px;
+        }
+    }
+        img{
+            padding: 0;
+            display: inline;
+            // height: 12px;
+            // margin-top: -3px;
+        }
+    }
+    .play-btn{
+        color: $text-color;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 12px;
+        img{
+            padding-right: 10px;
+        }
+    }
+
+    img{
+        padding: 0px 25px;
+    }
+}
+.logo{
+    cursor: pointer;
+}
+.back-btn{
+    margin-bottom: -60px !important;
+    cursor: pointer;
+}

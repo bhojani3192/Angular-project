@@ -1,0 +1,56 @@
+@import '../../scss/variables.scss';
+.message {
+  background: #8630F4;
+  color: #F8F8F8;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+  
+  .container {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: fit-content;
+    box-sizing: border-box;
+  }
+  
+  .text-box {
+    flex-grow: 1;
+    padding: 5px;
+    background-color: #e0e0e0;
+    border: none;
+    outline: none;
+  }
+  
+  .copy-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    position: relative;
+  }
+  
+  .copy-button img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .copied-icon {
+    width: 20px;
+    height: 20px;
+    animation: fade-in-out 2s;
+  }
+  
+  @keyframes fade-in-out {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  

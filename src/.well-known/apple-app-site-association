@@ -1,0 +1,23 @@
+{
+  "activitycontinuation": {
+    "apps": [
+      "7CX3K7KXVF.com.app.dubfeed"
+    ]
+  },
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "7CX3K7KXVF.com.app.dubfeed"
+        ],
+        "paths": [
+          "/share",
+          "/referral",
+          "/qrcode",
+          "/*"
+        ]
+      }
+    ]
+  }
+}

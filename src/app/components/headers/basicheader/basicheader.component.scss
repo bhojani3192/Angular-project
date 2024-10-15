@@ -1,0 +1,11 @@
+@import '../../../scss/variables.scss';
+
+.logo{
+    margin: 0px 50px 0px 50px;
+    .navbar-brand{
+        color: $text-color;
+        font-weight: 800;
+        font-size: 30px;
+        font-family: "Poppins", sans-serif;
+    }
+}

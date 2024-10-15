@@ -1,0 +1,34 @@
+<nav class="navbar">
+    <div class="nav-div">
+        <div class="logo">
+            <a class="navbar-brand">
+                <img src="/assets/images/dubfeed-logo.svg" alt="DubFeed" />
+            </a>
+        </div>
+
+        <div class="profile" style="position: relative;">
+            @if(isLogin === false){
+            <button mat-raised-button color="primary" class="primary-btn" (click)="opneDialog()">
+                Login
+            </button>
+            <button mat-raised-button color="primary" class="primary-btn" (click)="redirectToSignUpPage()">
+                Sign Up
+            </button>
+            }
+            @else{
+            <div class="profile-div">
+                <div [matMenuTriggerFor]="beforeMenu" style="cursor: pointer;">
+                    <img src="{{userDetail?.avtar ? userDetail?.avtar : '/assets/images/profilepic.png'}}">
+                    <div class="username">{{userDetail?.firstName}} {{userDetail?.lastName}}</div>
+                </div>
+                <mat-menu #beforeMenu="matMenu" xPosition="before" class="profile-menu">
+                    <button class="profilemenu" mat-menu-item (click)="openQRcode()"><mat-icon>qr_code</mat-icon>Login
+                        to device</button>
+                    <button class="profilemenu" mat-menu-item
+                        (click)="onLogoutClick()"><mat-icon>exit_to_app</mat-icon>Logout</button>
+                </mat-menu>
+            </div>
+            }
+        </div>
+    </div>
+</nav>

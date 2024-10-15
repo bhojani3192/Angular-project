@@ -1,0 +1,60 @@
+@import '../../../scss/variables.scss';
+
+.navbar{
+    height: 70px;
+    background: linear-gradient(-45.241deg, rgba(255, 255, 255, 10%) 0%, rgba(255, 255, 255, 0%) 100%);
+}
+.nav-div{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 12px;
+    width: 100%;
+    align-items: center;
+}
+.navbar-brand{
+    color: $text-color;
+    font-weight: 800;
+    font-size: 32px;
+    font-family: "Poppins", sans-serif;
+}
+.profile{
+    align-items: center;
+    img{
+        height: 30px;
+        width: 30px;
+        border-radius: 35px;
+    }
+
+    span{
+        color: #F8F8F9;
+        margin-left: 10px;
+    }
+    button{
+        margin-left: 10px;
+    }
+}
+.profile-div{
+    display: inline-block;
+    padding: 0px 20px;
+    img{
+        height: 35px;
+        width: 35px;
+        border-radius: 100%;
+    }
+}
+.username{
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 6px;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #f8f8f8;
+    display: inline-block;
+}
+.profilemenu{
+    font-family: 'Poppins';
+}
+.primary-btn{
+    background: $primary-color !important;
+    color: $text-color !important;
+}

@@ -1,0 +1,15 @@
+<div class="message">
+    Our referral feature is currently available on our mobile app. Download the
+    app to invite friends!
+</div>
+<div class="container">
+    <div>Referral code :</div>
+    <div #inputText id="text" class="text-box">{{ text }}</div>
+    <button (click)="copyToClipboard()" class="copy-button">
+        @if (copied) {
+            <img src="assets/images/check-mark.png" alt="Copied" class="copied-icon" />
+        } @else {
+            <img src="assets/images/copytoclipboard.png" alt="Copy" />
+        }
+    </button>
+</div>

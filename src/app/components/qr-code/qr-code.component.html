@@ -1,0 +1,61 @@
+<div>
+  <nav>
+    <nav class="navbar">
+      <div class="nav-div">
+        <div class="logo">
+          <a class="navbar-brand" routerLink="/">
+            <img src="/assets/images/dubfeed-logo.svg" alt="DubFeed" />
+          </a>
+        </div>
+
+        <div class="profile" style="position: relative;">
+          <div class="profile-div">
+            <div [matMenuTriggerFor]="beforeMenu" style="cursor: pointer;">
+              <img src="{{userDetail?.avtar ? userDetail?.avtar : '/assets/images/profilepic.png'}}">
+              <div class="username">{{userDetail?.firstName}} {{userDetail?.lastName}}</div>
+            </div>
+            <mat-menu #beforeMenu="matMenu" xPosition="before" class="profile-menu">
+              <button class="profilemenu" mat-menu-item (click)="onLogout()"><mat-icon>exit_to_app</mat-icon> Logout
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </nav>
+
+  <div class="container">
+    <span routerLink="/"><img src="/assets/images/back-btn.svg" alt="" class="back-btn"></span>
+    <div class="row justify-content-center " style="padding: 50px 0px 0px 0px">
+      <div class="info-div col-lg-9 mx-auto row justify-content-center">
+        <h1 class="info-heading mb-0">Games Fade, But The Memories Don’t</h1>
+        <p class="info-discription">
+          Submit your best game clip and get a shot at earning clip of the
+          week along with $100! The <br />first 200 people that sign up get
+          an exclusive badge for their profile on launch day.
+        </p>
+        <div class="btn-group justify-content-center">
+          <button mat-raised-button color="primary" class="download-btn primary-btn">
+            <a href="https://discord.gg/wruPh8XPaU" target="_blank">
+              <img src="/assets/images/discord.svg" alt="" />
+              <span>Join us on Discord</span>
+            </a>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="qr-wrap">
+      <div class="qr-code">
+        <qrcode [qrdata]="qrLink" [width]="250" [errorCorrectionLevel]="'M'" [allowEmptyString]="true"></qrcode>
+
+        <countdown #cd [config]="coundownconfig" (event)="handleEvent($event)" class="coundown"></countdown>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading" class="overlay"></div>
+<div *ngIf="loading" class="loader">
+  <mat-spinner class="spinner" diameter="40" mode="indeterminate"></mat-spinner>
+  <span class="loding-text">Loading...</span>
+</div>

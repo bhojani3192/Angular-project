@@ -1,0 +1,54 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSource: spec
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  displayName: 'Installing a package'
+  inputs:
+    command: 'install'
+
+- task: Npm@1
+  displayName: 'Building a project'
+  inputs:
+    command: 'custom'
+    customCommand: 'run build-prod'
+  
+- task: CopyFiles@2
+  inputs:
+    Contents: 'dist/**/*'
+    TargetFolder: $(Build.ArtifactStagingDirectory)
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'release'
+    publishLocation: 'Container'
+
+- task: FtpUpload@2
+  inputs:
+    credentialsOption: 'inputs'
+    serverUrl: 'ftps://waws-prod-blu-513.ftp.azurewebsites.windows.net'
+    username: 'web-devappserver'
+    password: 'R21nD6mT6a8hn1qiSDBcS3qqrr0eXysXpyqePoR8vt0x0mq15YCmirrYeutm'
+    implicitFTPS: false
+    rootDirectory: '$(Build.ArtifactStagingDirectory)/dist/web-dubfeed'
+    filePatterns: '**/*'
+    remoteDirectory: '/site/wwwroot/'
+    clean: true
+    cleanContents: true
+    preservePaths: true
+    trustSSL: false

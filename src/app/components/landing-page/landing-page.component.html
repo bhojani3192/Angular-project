@@ -1,0 +1,637 @@
+<div style="width: 100%">
+  <div class="background">
+
+    <app-landingpageheader></app-landingpageheader>
+
+    <div class="video-div">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="info-div col-lg-9 mx-auto">
+            <h1 class="info-heading mb-0">Games Fade, But The Memories Don’t</h1>
+            <p class="info-discription">
+              Submit your best game clip and get a shot at earning clip of the
+              week along with $100! The <br />first 200 people that sign up get
+              an exclusive badge for their profile on launch day.
+            </p>
+            <div class="btn-group justify-content-center">
+              <button mat-raised-button color="primary" class="download-btn primary-btn">
+                <a href="https://discord.gg/wruPh8XPaU" target="_blank">
+                  <img src="/assets/images/discord.svg" alt="" />
+                  <span>Join us on Discord</span>
+                </a>
+              </button>
+            </div>
+          </div>
+
+          <div class="email-div">
+            <div class="control-wraper">
+              <form [formGroup]="earlyAccessForm" class="earlyaccessform">
+                <div class="email-control-wrap d-flex align-items-center">
+                  <div class="email-field">
+                    <input #emailInput type="text" formControlName="email"
+                      class="form-control custom-placeholder email-input" placeholder="Your email address" />
+                  </div>
+
+                  <div class="select-platform d-flex align-items-center">
+                    <div class="radio-control-wrap">
+                      <input type="radio" id="iphone" value="1" formControlName="deviceType" />
+                      <label for="iphone">Iphone</label><br />
+                    </div>
+                    <div class="radio-control-wrap">
+                      <input type="radio" id="android" value="2" formControlName="deviceType" />
+                      <label for="android">Android</label>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="earlyAccessForm.get('email')?.invalid && earlyAccessForm.get('email')?.touched"
+                  class="text-danger error-div">
+                  <mat-error *ngIf="earlyAccessForm.get('email')?.hasError?.('required')">*Email is required</mat-error>
+                  <mat-error *ngIf="earlyAccessForm.get('email')?.hasError?.('email')">*Invalid email
+                    formate</mat-error>
+                </div>
+              </form>
+            </div>
+
+            <button mat-raised-button color="primary" class="access-btn" (click)="getEarlyAccess()"
+              [disabled]="earlyAccessForm.invalid">
+              <span style="display: flex">
+                <span>Get Early Access</span>
+                <span *ngIf="loadingsmall" class="loader" style="margin-left: 5px">
+                  <mat-spinner class="spinner" diameter="20" mode="indeterminate"></mat-spinner>
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slider">
+      <ngx-slick-carousel class="carousel player-div" #slickModal="slick-carousel" [config]="slideConfig"
+        (afterChange)="onAfterChange($event)" (init)="slickInit($event)">
+        @if(isTopData) {
+        <div ngxSlickItem *ngFor="let slide of slides; index as i" class="slide">
+          <div class="layer">
+            @if(slide.contentType === 'Video'){
+              @if(slide.isContentEncoded === true){
+                <!-- *VideoJS -->
+                <video #videoPlayer 
+                id="videoPlayer-{{i}}"
+                class=" video-js video-player" width="100%" 
+                 playsinline preload="auto" crossorigin="anonymous"
+                poster="{{ slide.thumbnailURI_Small }}"
+              
+                (click)="onVideoJSClick(i)" (ended)="onVideoJSEnded(i)">
+                  <!-- <source src="{{ slide.encodedHLSUrl }}" type="application/x-mpegURL" /> -->
+                  <source src="{{ slide.encodedDASHUrl }}" type="application/dash+xml" />
+                </video>
+                <div #videoPlayBtn class="play-btn" [hidden]="true" (click)="onVideoJSPlayBtnClick(i)">
+                  <img src="/assets/images/video-play-icon.svg" alt="" />
+                </div>
+              } @else {
+                <video #videoPlayer class="layer-img" width="100%" (click)="onVideoClick(i)" (ended)="onVideoEnded(i)">
+                  <source src="{{ slide.content_URI }}" type="video/mp4" />
+                </video>
+                <div #videoPlayBtn class="play-btn" [hidden]="true" (click)="onPlayBtnClick(i)">
+                  <img src="/assets/images/video-play-icon.svg" alt="" />
+                </div>
+              }
+            
+            } @else {
+            <img class="layer-img" src="{{ slide.content_URI }}" alt="" width="100%" />
+            }
+          </div>
+        </div>
+        } @else {
+        <div ngxSlickItem *ngFor="let slide of slides2" class="slide">
+          <img class="layer-img" src="{{ slide.content_URI }}" alt="" width="100%"
+           />
+        </div>
+        }
+      </ngx-slick-carousel>
+    </div>
+  </div>
+
+  <div class="card-group community-wraper">
+    <div class="container">
+      <div class="row justify-content-center">
+        <mat-card class="info-card-wrap share-card-wraper">
+          <div class="card-bg"></div>
+          <div class="info-icon-wraper">
+            <div class="info-icon">
+              <img src="/assets/images/shareIcon.svg" />
+            </div>
+            <div class="info-name">
+              <h5>Share</h5>
+              <p>Your best moment</p>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="image-wraper">
+              <img src="/assets/images/share-card.png" class="img-fluid" alt="" />
+            </div>
+            <div class="share-content">
+              <span class="post-name"> Apex Legends<sup>TM</sup> </span>
+              <div class="d-flex justify-content-between user-info">
+                <div class="user-name d-flex align-items-center">
+                  <img src="/assets/images/userImg.png" alt="" />
+                  <h6 class="mb-0">ShadowPulse</h6>
+                </div>
+                <button class="follow-btn">Following</button>
+              </div>
+              <div class="activity-wrap">
+                <div class="activity-btn">
+                  <img src="/assets/images/likeIcon.svg" alt="" />
+                  <span>150</span>
+                </div>
+                <div class="activity-btn">
+                  <img src="/assets/images/dislike.svg" alt="" />
+                  <span>10</span>
+                </div>
+                <div class="activity-btn">
+                  <img src="/assets/images/comment.svg" alt="" />
+                  <span>10 Reply</span>
+                </div>
+              </div>
+              <p class="content">
+                Share your greatest, scariest, or funniest posts on Dubfeed. See
+                what everyone thinks about your gaming feats and automatically
+                be entered into clip of the week!
+              </p>
+            </div>
+          </div>
+        </mat-card>
+        <mat-card class="info-card-wrap connect-card-wraper">
+          <div class="card-bg"></div>
+          <div class="info-icon-wraper">
+            <div class="info-icon">
+              <img src="/assets/images/connectIcon.svg" />
+            </div>
+            <div class="info-name">
+              <h5>Connect</h5>
+              <p>With your friends and pros</p>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="tab-wraper">
+              <button class="btn active" [class.active]="isShowIndividual" (click)="isShowIndividual = true">
+                Individual
+              </button>
+              <button class="btn" [class.active]="!isShowIndividual" (click)="isShowIndividual = false">
+                Squad
+              </button>
+            </div>
+            <div class="chat-wraper">
+              <ul class="squad-chat" *ngIf="!isShowIndividual">
+                <li class="chat-list">
+                  <img src="/assets/images/squadmg.png" alt="" />
+                  <div class="chat-content">
+                    <div class="chat chat-name">
+                      <h6 class="name">Dub Squad</h6>
+                      <span class="time">12 Min Ago</span>
+                    </div>
+                    <div class="chat">
+                      <p>You guys wanna catch some dubs?</p>
+                      <span class="count">4</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-list">
+                  <img src="/assets/images/squadImg2.png" alt="" />
+                  <div class="chat-content">
+                    <div class="chat chat-name">
+                      <h6 class="name">The A-Team</h6>
+                      <span class="time">16 Min Ago</span>
+                    </div>
+                    <div class="chat">
+                      <p>I can smell the sweats in this lobby...</p>
+                      <span class="count">1</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-list">
+                  <img src="/assets/images/squadImg3.png" alt="" />
+                  <div class="chat-content">
+                    <div class="chat chat-name">
+                      <h6 class="name">Builders</h6>
+                      <span class="time">22 Min Ago</span>
+                    </div>
+                    <div class="chat">
+                      <p>Stay out of my chest!</p>
+                      <span class="count">3</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-list">
+                  <img src="/assets/images/squadImg4.png" alt="" />
+                  <div class="chat-content">
+                    <div class="chat chat-name">
+                      <h6 class="name">Indie Squad</h6>
+                      <span class="time">32 Min Ago</span>
+                    </div>
+                    <div class="chat">
+                      <p>You were right, Hollowknight is goated!</p>
+                      <span class="count">8</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <ul class="individual-chat" *ngIf="isShowIndividual">
+                <li class="chat-list">
+                  <img src="/assets/images/individualImg.png" alt="" />
+                  <div class="chat-content">
+                    <div class="chat chat-name">
+                      <h6 class="name">Somedubz</h6>
+                      <span class="time">20 Min Ago</span>
+                    </div>
+                    <div class="chat">
+                      <p>when are you getting on?</p>
+                      <span class="count">2</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-list">
+                  <img src="/assets/images/individualImg2.png" alt="" />
+                  <div class="chat-content">
+                    <div class="chat chat-name">
+                      <h6 class="name">Jumboversace</h6>
+                      <span class="time">17 Min Ago</span>
+                    </div>
+                    <div class="chat">
+                      <p>That guy was clearly cheating.</p>
+                      <span class="count">2</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-list">
+                  <img src="/assets/images/individualImg3.png" alt="" />
+                  <div class="chat-content">
+                    <div class="chat chat-name">
+                      <h6 class="name">Delporko</h6>
+                      <span class="time">19 Min Ago</span>
+                    </div>
+                    <div class="chat">
+                      <p>Those were some tasty Dubs</p>
+                      <span class="count">2</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="chat-list">
+                  <img src="/assets/images/individualImg4.png" alt="" />
+                  <div class="chat-content">
+                    <div class="chat chat-name">
+                      <h6 class="name">Jackolope</h6>
+                      <span class="time">3 Min Ago</span>
+                    </div>
+                    <div class="chat">
+                      <p>Have you checked out The Finals yet?</p>
+                      <span class="count">2</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="share-content">
+              <p class="content">
+                Make new friends and create squads with your current ones.
+                Instantly share your best moments when they happen!
+              </p>
+            </div>
+          </div>
+        </mat-card>
+        <mat-card class="info-card-wrap store-card-wraper">
+          <div class="card-bg"></div>
+          <div class="info-icon-wraper">
+            <div class="info-icon">
+              <img src="/assets/images/storeicon.svg" />
+            </div>
+            <div class="info-name">
+              <h5>Store</h5>
+              <p>Your gaming memories securely</p>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="progress-wraper">
+              <p>Dubfeed Storage</p>
+              <div class="progress-bar">
+                <div class="progress-status"></div>
+                <span class="number">80%</span>
+              </div>
+            </div>
+
+            <div class="tab-wraper">
+              <button class="btn active" [class.active]="isShowGameClips" (click)="isShowGameClips = true">
+                Gameclips
+              </button>
+              <button class="btn" [class.active]="!isShowGameClips" (click)="isShowGameClips = false">
+                Screenshots
+              </button>
+            </div>
+            <div class="tab-content">
+              <div class="d-flex cards-wraper game-clips" *ngIf="isShowGameClips">
+                <div class="card">
+                  <div class="card-header">
+                    <h6>Pokémon</h6>
+                    <p>3 Jan 2023 at 4.15 pm</p>
+                  </div>
+                  <div class="video-wraper">
+                    <img src="/assets/images/game-clip.png" alt="" class="img-fluid" />
+                    <span class="duration">4:27M</span>
+                  </div>
+                  <div class="card-footer">
+                    <img src="/assets/images/sad-circle.svg" alt="" />
+                    <span>Not Posted</span>
+                  </div>
+                </div>
+                <div class="card second-card">
+                  <div class="card-header">
+                    <h6>After Playing Pokémon</h6>
+                    <p>3 Jan 2023 at 4.15 pm</p>
+                  </div>
+                  <div class="video-wraper">
+                    <img src="/assets/images/gameclip2.png" alt="" class="img-fluid" />
+                    <span class="duration">4:27M</span>
+                  </div>
+                  <div class="card-footer">
+                    <img src="/assets/images/like.svg" alt="" />
+                    <span>15</span>
+
+                    <img src="/assets/images/views.svg" alt="" />
+                    <span>15</span>
+
+                    <img src="/assets/images/star.svg" alt="" />
+                    <span>15</span>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex cards-wraper screenshot" *ngIf="!isShowGameClips">
+                <div class="card">
+                  <div class="card-header">
+                    <h6>Casual Dub</h6>
+                    <p>3 Jan 2023 at 4.15 pm</p>
+                  </div>
+                  <div class="video-wraper">
+                    <img src="/assets/images/screenshot.png" alt="" />
+                  </div>
+                  <div class="card-footer">
+                    <img src="/assets/images/sad-circle.svg" alt="" />
+                    <span>Not Posted</span>
+                  </div>
+                </div>
+                <div class="card second-card">
+                  <div class="card-header">
+                    <h6>Just in case</h6>
+                    <p>3 Jan 2023 at 4.15 pm</p>
+                  </div>
+                  <div class="video-wraper">
+                    <img src="/assets/images/screenshot2.png" alt="" />
+                  </div>
+                  <div class="card-footer">
+                    <img src="/assets/images/like.svg" alt="" />
+                    <span>15</span>
+
+                    <img src="/assets/images/views.svg" alt="" />
+                    <span>15</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="share-content">
+              <p class="content">
+                Keep your most precious gaming memories safe and sound with
+                Dubfeed storage. Clear up your Xbox network storage and know
+                that your clips can always been found and managed through
+                Dubfeed
+              </p>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="fetures-left">
+    <div>
+      <div class="img-div">
+        <img src="/assets/images/mobile1.png" alt="" />
+      </div>
+    </div>
+    <div class="discription-div">
+      <div>
+        <h3 class="section-title">
+          Share Gaming Content with Your <br />
+          Friends and the World
+        </h3>
+        <span class="discription-text">
+          DubFeed empowers gamers to seamlessly share their gaming triumphs and
+          memorable moments with a global community. Whether it’s a spectacular
+          kill, a strategic masterstroke, or a hilarious fail, DubFeed makes it
+          easy to broadcast these moments directly from your gaming console to
+          friends and followers around the world. Engage with a like-minded
+          community, receive instant feedback, and become a part of a vibrant
+          ecosystem where every gamer’s story can be told and celebrated.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fetures-right">
+    <div class="discription-div">
+      <div>
+        <h3 class="section-title">
+          Find the Most Impressive Gamers <br />
+          and Feats of Gaming
+        </h3>
+        <span class="discription-text">
+          Discover the extraordinary talents within the gaming universe with
+          DubFeed. Our platform curates the most impressive gaming feats,
+          allowing users to explore high-quality content from top-tier gamers.
+          Whether you're looking for inspiration, entertainment, or a chance to
+          learn from the best, DubFeed connects you to the pinnacle of gaming
+          excellence. Dive into a rich repository of curated clips, find your
+          gaming idols, and perhaps even challenge them as you climb the
+          leaderboards of popularity and skill.
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <div class="img-div">
+        <img src="/assets/images/mobile-2.png" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <div class="fetures-left last">
+    <div>
+      <div class="img-div">
+        <img src="/assets/images/mobile1.png" alt="" />
+      </div>
+    </div>
+    <div class="discription-div">
+      <div>
+        <h3 class="section-title">
+          The Ability to Store and Manage <br />
+          Historical Gaming Clips
+        </h3>
+        <span class="discription-text">
+          DubFeed is not just about sharing and discovering; it's also a robust
+          archival tool that lets gamers manage their digital legacy. With
+          features that allow you to title, trim, describe, and merge clips,
+          DubFeed ensures that your gaming history is preserved in high quality.
+          Beyond mere storage, it offers enhanced capabilities to edit and
+          organize your gaming content efficiently, making it easily accessible
+          for future viewing and sharing. With options for extended storage,
+          DubFeed guarantees that your gaming milestones and memories are never
+          lost and always ready to be relived or shared.
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="review-section">
+    <div class="review-group">
+      <div class="container">
+        <div class="row">
+          <div class="review-heading">
+            <h3 class="section-title">Kind words from our lovely customers</h3>
+            <span>
+              <button class="btn btn-primary" type="button" style="border-radius: 25px 0px 0px 25px">
+                <img src="/assets/images/Arrow - Left.png" alt="" />
+              </button>
+              <button class="btn btn-primary" type="button" style="border-radius: 0px 25px 25px 0px">
+                <img src="/assets/images/Arrow - Right.png" alt="" />
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <mat-card class="review-card-wrap" *ngFor="let data of quotes">
+            <div class="review-text">
+              {{ data.quote }}
+            </div>
+
+            <div class="writter">
+              <img src="{{ data.profile }}" alt="" class="profile" />
+              <span class="name-text">{{ data.gamertag }}</span>
+              <img src="/assets/images/Group(coma).png" alt="" class="coma" />
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="query-section">
+    <div class="container">
+      <div class="row">
+        <h3 class="query-heading section-title">Freqently asked questions</h3>
+        <div class="question-div">
+          <div class="que-list">
+            <mat-accordion class="example-headers-align">
+              <mat-expansion-panel hideToggle *ngFor="let question of Questions ; let i = index">
+                <mat-expansion-panel-header (click)="togglePanel(i)">
+                  <mat-panel-title>{{ question.question }}</mat-panel-title>
+                  <mat-panel-description>
+                    <button mat-icon-button>
+                      <mat-icon>{{ expanded[i] === false ? "add" : "remove" }}</mat-icon>
+                    </button>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-panel-description>
+                  {{ question.ans }}
+                </mat-panel-description>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+
+          <div class="que-new">
+            <mat-card class="question-card-wrap">
+              <div class="email-icon-wrap" style="text-align: center">
+                <img src="/assets/images/emailIcon.svg" class="question-img" />
+              </div>
+              <div class="que-new-text">
+                <h4 class="heading">HAVE A DIFFRENT QUESTION ?</h4>
+                <p class="discription">
+                  Send us an email!
+                </p>
+              </div>
+              <div class="btn-div">
+                <button mat-raised-button color="primary" class="email-btn">
+                  <img src="/assets/images/Letter.svg" alt="" />
+                  <a href="mailto:Support@dubfeed.com">Shoot a Direct Mail</a>
+                </button>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download-wraper -->
+  <div class="download-section">
+    <div class="container">
+      <div class="row">
+        <div class="download-card">
+          <div class="download-div">
+            <div class="img-div">
+              <img src="/assets/images/iPhone 15.png" alt="" />
+            </div>
+            <div class="download-info">
+              <div>
+                <h2 class="heading">
+                  Download now and begin your journey to a better Gaming
+                  Experience
+                </h2>
+              </div>
+              <div class="description-wrap">
+                <p class="discription">
+                  Join our early release program to gain access to early features and get a chance to win $100
+                  with your clip of the week.
+                </p>
+              </div>
+              <div class="download-img">
+                <a (click)="onClickFocusEmailInput('1')">
+                  <img src="/assets/images/Group 1321314132.png" alt="" />
+                </a>
+                <a (click)="onClickFocusEmailInput('2')">
+                  <img src="/assets/images/Group 1321314131.png" alt="" class="space" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row align-items-center justify-content-between">
+        <div class="logo px-0 w-50">
+          <a class="navbar-brand">
+            <svg width="169" height="39" viewBox="0 0 169 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.3872 2.6095C18.2495 1.39493 23.2374 -0.305462 28.29 2.6095" stroke="#F8F8F8"
+                stroke-width="1.94331" stroke-linecap="round" />
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M39.0448 23.7735L39.0448 23.7734L39.0448 23.7734C39.2698 23.2511 39.4796 22.764 39.7068 22.407C40.1753 21.47 40.8948 20.9346 41.7684 20.2845C42.2537 19.9233 42.7866 19.5267 43.3505 19.0062C43.7959 18.5609 44.6866 17.1115 44.6866 14.8767C44.6866 12.0831 42.7433 8.68236 40.7999 6.61759C38.8566 4.55282 36.9133 3.58117 34.4842 3.58117C32.055 3.58117 29.7474 4.79574 29.0186 7.10342C26.9539 5.16011 21.2454 3.09534 15.7798 6.98196C14.8082 4.43145 11.043 1.75931 6.30618 4.67428C5.29404 5.2411 2.80822 7.29783 0.962078 10.9901C-1.3456 15.6055 0.962079 19.1277 3.02685 20.3423C4.36287 21.1925 5.45607 22.7714 5.9419 24.2289C6.42773 25.6864 7.27792 26.901 8.61395 26.901C9.94998 26.901 11.0431 24.9577 11.6504 23.3787C12.1362 22.1156 12.5006 21.152 12.622 20.8281C13.2293 22.2046 15.1969 25.1763 18.209 26.0508C18.3315 26.8028 18.4413 27.4994 18.5432 28.146L18.5433 28.1462C19.1493 31.9904 19.4771 34.0689 20.5167 35.5244C21.7313 37.2248 23.6746 38.3179 25.4965 38.3179C27.3183 38.3179 30.4762 36.9819 30.4762 34.0669C30.4762 32.488 29.3831 30.9091 27.8041 30.9091C26.2252 30.9091 26.2252 32.0022 26.2252 32.2451C26.2252 32.3202 26.3876 32.4068 26.612 32.5266C27.1137 32.7944 27.9256 33.2277 27.9256 34.0669C27.9256 35.2815 26.5896 35.403 26.3467 35.403C26.1037 35.403 24.4033 35.0386 24.4033 32.9738C24.4033 31.0833 25.6252 28.0727 26.2044 26.6458L26.2044 26.6456L26.2045 26.6453C26.2579 26.514 26.3057 26.3961 26.3467 26.2937C27.3183 25.8079 29.8689 24.2289 32.1766 20.9496C33.0268 23.7431 34.2412 27.0223 36.1846 26.9009C37.6975 26.9009 38.4279 25.2054 39.0448 23.7735ZM29.2616 16.9414C30.0666 16.9414 30.7191 16.2345 30.7191 15.3625C30.7191 14.4905 30.0666 13.7836 29.2616 13.7836C28.4567 13.7836 27.8042 14.4905 27.8042 15.3625C27.8042 16.2345 28.4567 16.9414 29.2616 16.9414ZM16.873 15.3625C16.873 16.2345 16.2205 16.9414 15.4155 16.9414C14.6106 16.9414 13.9581 16.2345 13.9581 15.3625C13.9581 14.4905 14.6106 13.7836 15.4155 13.7836C16.2205 13.7836 16.873 14.4905 16.873 15.3625ZM19.788 12.3261C19.3855 12.3261 19.0592 12.6523 19.0592 13.0548C19.0592 13.4573 19.3855 13.7836 19.788 13.7836H24.8891C25.2916 13.7836 25.6179 13.4573 25.6179 13.0548C25.6179 12.6523 25.2916 12.3261 24.8891 12.3261H19.788ZM19.0592 15.7269C19.0592 15.3244 19.3855 14.9981 19.788 14.9981H24.8891C25.2916 14.9981 25.6179 15.3244 25.6179 15.7269C25.6179 16.1293 25.2916 16.4556 24.8891 16.4556H19.788C19.3855 16.4556 19.0592 16.1293 19.0592 15.7269ZM19.788 17.4273C19.3855 17.4273 19.0592 17.7535 19.0592 18.156C19.0592 18.5585 19.3855 18.8847 19.788 18.8847H24.8891C25.2916 18.8847 25.6179 18.5585 25.6179 18.156C25.6179 17.7535 25.2916 17.4273 24.8891 17.4273H19.788ZM19.3021 20.1067C19.3021 20.1026 19.3054 20.0993 19.3095 20.0993H25.3676C25.3717 20.0993 25.375 20.1026 25.375 20.1067C25.375 20.9076 24.7257 21.5568 23.9249 21.5568H20.7523C19.9514 21.5568 19.3021 20.9076 19.3021 20.1067ZM19.3107 11.3544C19.306 11.3544 19.3021 11.3506 19.3021 11.3458C19.3021 10.4115 20.0596 9.65402 20.9939 9.65402H23.6832C24.6175 9.65402 25.375 10.4115 25.375 11.3458C25.375 11.3506 25.3711 11.3544 25.3664 11.3544H19.3107Z"
+                fill="#F8F8F8" />
+              <path
+                d="M63.1365 10.4069C65.0605 10.4069 66.7419 10.7883 68.1805 11.5509C69.6192 12.3136 70.7285 13.3883 71.5085 14.7749C72.3059 16.1443 72.7045 17.7303 72.7045 19.5329C72.7045 21.3183 72.3059 22.9043 71.5085 24.2909C70.7285 25.6776 69.6105 26.7523 68.1545 27.5149C66.7159 28.2776 65.0432 28.6589 63.1365 28.6589H56.2985V10.4069H63.1365ZM62.8505 24.8109C64.5319 24.8109 65.8405 24.3516 66.7765 23.4329C67.7125 22.5143 68.1805 21.2143 68.1805 19.5329C68.1805 17.8516 67.7125 16.5429 66.7765 15.6069C65.8405 14.6709 64.5319 14.2029 62.8505 14.2029H60.7445V24.8109H62.8505ZM88.7351 14.1509V28.6589H84.2891V26.6829C83.8385 27.3243 83.2231 27.8443 82.4431 28.2429C81.6805 28.6243 80.8311 28.8149 79.8951 28.8149C78.7858 28.8149 77.8065 28.5723 76.9571 28.0869C76.1078 27.5843 75.4491 26.8649 74.9811 25.9289C74.5131 24.9929 74.2791 23.8923 74.2791 22.6269V14.1509H78.6991V22.0289C78.6991 22.9996 78.9505 23.7536 79.4531 24.2909C79.9558 24.8283 80.6318 25.0969 81.4811 25.0969C82.3478 25.0969 83.0325 24.8283 83.5351 24.2909C84.0378 23.7536 84.2891 22.9996 84.2891 22.0289V14.1509H88.7351ZM95.5947 16.2049C96.0107 15.5289 96.6087 14.9829 97.3887 14.5669C98.1687 14.1509 99.0613 13.9429 100.067 13.9429C101.263 13.9429 102.346 14.2463 103.317 14.8529C104.287 15.4596 105.05 16.3263 105.605 17.4529C106.177 18.5796 106.463 19.8883 106.463 21.3789C106.463 22.8696 106.177 24.1869 105.605 25.3309C105.05 26.4576 104.287 27.3329 103.317 27.9569C102.346 28.5636 101.263 28.8669 100.067 28.8669C99.044 28.8669 98.1513 28.6676 97.3887 28.2689C96.626 27.8529 96.028 27.3069 95.5947 26.6309V28.6589H91.1487V9.41894H95.5947V16.2049ZM101.939 21.3789C101.939 20.2696 101.627 19.4029 101.003 18.7789C100.396 18.1376 99.642 17.8169 98.7407 17.8169C97.8567 17.8169 97.1027 18.1376 96.4787 18.7789C95.872 19.4203 95.5687 20.2956 95.5687 21.4049C95.5687 22.5143 95.872 23.3896 96.4787 24.0309C97.1027 24.6723 97.8567 24.9929 98.7407 24.9929C99.6247 24.9929 100.379 24.6723 101.003 24.0309C101.627 23.3723 101.939 22.4883 101.939 21.3789ZM119.897 10.4069V13.9689H112.461V17.8169H118.025V21.2749H112.461V28.6589H108.015V10.4069H119.897ZM135.13 21.1709C135.13 21.5869 135.104 22.0203 135.052 22.4709H124.99C125.059 23.3723 125.345 24.0656 125.848 24.5509C126.368 25.0189 127.001 25.2529 127.746 25.2529C128.855 25.2529 129.627 24.7849 130.06 23.8489H134.792C134.549 24.8023 134.107 25.6603 133.466 26.4229C132.842 27.1856 132.053 27.7836 131.1 28.2169C130.147 28.6503 129.081 28.8669 127.902 28.8669C126.481 28.8669 125.215 28.5636 124.106 27.9569C122.997 27.3503 122.13 26.4836 121.506 25.3569C120.882 24.2303 120.57 22.9129 120.57 21.4049C120.57 19.8969 120.873 18.5796 121.48 17.4529C122.104 16.3263 122.971 15.4596 124.08 14.8529C125.189 14.2463 126.463 13.9429 127.902 13.9429C129.306 13.9429 130.554 14.2376 131.646 14.8269C132.738 15.4163 133.587 16.2569 134.194 17.3489C134.818 18.4409 135.13 19.7149 135.13 21.1709ZM130.58 20.0009C130.58 19.2383 130.32 18.6316 129.8 18.1809C129.28 17.7303 128.63 17.5049 127.85 17.5049C127.105 17.5049 126.472 17.7216 125.952 18.1549C125.449 18.5883 125.137 19.2036 125.016 20.0009H130.58ZM150.371 21.1709C150.371 21.5869 150.345 22.0203 150.293 22.4709H140.231C140.301 23.3723 140.587 24.0656 141.089 24.5509C141.609 25.0189 142.242 25.2529 142.987 25.2529C144.097 25.2529 144.868 24.7849 145.301 23.8489H150.033C149.791 24.8023 149.349 25.6603 148.707 26.4229C148.083 27.1856 147.295 27.7836 146.341 28.2169C145.388 28.6503 144.322 28.8669 143.143 28.8669C141.722 28.8669 140.457 28.5636 139.347 27.9569C138.238 27.3503 137.371 26.4836 136.747 25.3569C136.123 24.2303 135.811 22.9129 135.811 21.4049C135.811 19.8969 136.115 18.5796 136.721 17.4529C137.345 16.3263 138.212 15.4596 139.321 14.8529C140.431 14.2463 141.705 13.9429 143.143 13.9429C144.547 13.9429 145.795 14.2376 146.887 14.8269C147.979 15.4163 148.829 16.2569 149.435 17.3489C150.059 18.4409 150.371 19.7149 150.371 21.1709ZM145.821 20.0009C145.821 19.2383 145.561 18.6316 145.041 18.1809C144.521 17.7303 143.871 17.5049 143.091 17.5049C142.346 17.5049 141.713 17.7216 141.193 18.1549C140.691 18.5883 140.379 19.2036 140.257 20.0009H145.821ZM151.053 21.3789C151.053 19.8883 151.33 18.5796 151.885 17.4529C152.457 16.3263 153.228 15.4596 154.199 14.8529C155.17 14.2463 156.253 13.9429 157.449 13.9429C158.402 13.9429 159.269 14.1423 160.049 14.5409C160.846 14.9396 161.47 15.4769 161.921 16.1529V9.41894H166.367V28.6589H161.921V26.5789C161.505 27.2723 160.907 27.8269 160.127 28.2429C159.364 28.6589 158.472 28.8669 157.449 28.8669C156.253 28.8669 155.17 28.5636 154.199 27.9569C153.228 27.3329 152.457 26.4576 151.885 25.3309C151.33 24.1869 151.053 22.8696 151.053 21.3789ZM161.921 21.4049C161.921 20.2956 161.609 19.4203 160.985 18.7789C160.378 18.1376 159.633 17.8169 158.749 17.8169C157.865 17.8169 157.111 18.1376 156.487 18.7789C155.88 19.4029 155.577 20.2696 155.577 21.3789C155.577 22.4883 155.88 23.3723 156.487 24.0309C157.111 24.6723 157.865 24.9929 158.749 24.9929C159.633 24.9929 160.378 24.6723 160.985 24.0309C161.609 23.3896 161.921 22.5143 161.921 21.4049Z"
+                fill="#F8F8F8" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="contact-wraper d-flex w-50 justify-content-end px-0">
+          <a target="_blank" href="https://discord.gg/wruPh8XPaU">
+            <span>Contact us At</span>
+            <img src="/assets/images/discord-icon-footer.svg" alt="" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

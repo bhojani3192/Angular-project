@@ -1,0 +1,149 @@
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-md-6">
+            <div class="main-div">
+            <app-basicheader></app-basicheader>
+                <div class="card-bg">
+                    <div class="content-div">
+                        <div class="info-wrap">
+                            <span class="flex">
+                                <h2 class="box-title">Lets Start!</h2>
+                            </span>
+                            <p class="sub-title">Start your journey with us.</p>
+                            <p  class="content">Please fill details to continue!</p>
+                        </div>
+                
+                        <div class="btn-group">
+                            <div>
+                                <button mat-raised-button color="primary" class="xbox-btn primary-btn" (click)="onXboxSignUpClick()">
+                                    <a>
+                                        <img src="/assets/images/Xbox.svg" alt="" />
+                                        <span>Continue with XBOX</span>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                
+                        <div class="div-or">
+                            <div class="rectangle-line"></div>
+                            <div class="or">or</div>
+                            <div class="rectangle-line"></div>
+                        </div>
+                
+                        <div class="form-wrap">
+                            <form class="form" [formGroup]="signUpform">
+                                <div class="form-field">
+                                    <span class="form-label">First Name</span>
+                                    <input type="text" class="form-control custom-placeholder form-input" placeholder="Enter first name"
+                                        formControlName="firstName"
+                                        [ngClass]="{'is-invalid': signUpform.get('firstName')?.touched && !signUpform.get('firstName')?.valid }" />
+                                    <mat-error *ngIf="signUpform.get('firstName')?.touched && signUpform.get('firstName')?.invalid">
+                                        Please enter a first name
+                                    </mat-error>
+                                </div>
+                
+                                <div class="form-field">
+                                    <span class="form-label">Last Name</span>
+                                    <input type="text" class="form-control custom-placeholder form-input" placeholder="Enter last name" formControlName="lastName"/>
+                                </div>
+                
+                                <div class="form-field">
+                                    <span class="form-label">User Name</span>
+                                    <input type="text" class="form-control custom-placeholder form-input" placeholder="Enter user name"
+                                        formControlName="userName"
+                                        [ngClass]="{'is-invalid': signUpform.get('userName')?.touched && !signUpform.get('userName')?.valid }" />
+                                    <mat-error *ngIf="signUpform.get('userName')?.touched && signUpform.get('userName')?.invalid">
+                                        Please enter a user name
+                                    </mat-error>
+                                </div>
+                
+                                <div class="form-field">
+                                    <span class="form-label">Email</span>
+                                    <input type="text" class="form-control custom-placeholder form-input" placeholder="Email"
+                                        formControlName="email"
+                                        [ngClass]="{'is-invalid': signUpform.get('email')?.touched && !signUpform.get('email')?.valid }" />
+                                    <mat-error *ngIf="signUpform.get('email')?.touched && signUpform.get('email')?.invalid">
+                                        Please enter a valid email address
+                                    </mat-error>
+                                </div>
+                
+                                <div class="form-field">
+                                    <span class="form-label">Password</span>
+                                    <input [type]="passwordHide ? 'password' : 'text'"
+                                        class="form-control custom-placeholder form-input" placeholder="Your password"
+                                        formControlName="password"
+                                        [ngClass]="{'is-invalid': signUpform.get('password')?.touched && !signUpform.get('password')?.valid }" />
+                                    <span class="eye-btn" (click)="passwordHide = !passwordHide" [attr.aria-label]="'Hide password'"
+                                        [attr.aria-pressed]="passwordHide">
+                                        <mat-icon class="padding-12">{{ passwordHide ? "visibility_off" : "visibility" }}</mat-icon>
+                                    </span>
+                                    <mat-error *ngIf="signUpform.get('password')?.touched && signUpform.get('password')?.invalid">
+                                        Please make sure it contains at least 8 characters, including a combination of letters, numbers,
+                                        and
+                                        special characters.
+                                    </mat-error>
+                                </div>
+                
+                                <div class="form-field">
+                                    <span class="form-label">Confirm Password</span>
+                                    <input [type]="confirmPasswordHide ? 'password' : 'text'"
+                                        class="form-control custom-placeholder form-input" placeholder="Your confirm password"
+                                        formControlName="confirmPassword"
+                                        [ngClass]="{'is-invalid': signUpform.get('confirmPassword')?.touched && (!signUpform.get('password')?.valid || signUpform.get('confirmPassword')?.value !== signUpform.get('password')?.value) }" />
+                                    <span class="eye-btn" (click)="confirmPasswordHide = !confirmPasswordHide"
+                                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="confirmPasswordHide">
+                                        <mat-icon class="padding-12">{{ confirmPasswordHide ? "visibility_off" : "visibility"
+                                            }}</mat-icon>
+                                    </span>
+                                    <mat-error
+                                        *ngIf="signUpform.get('confirmPassword')?.touched && (signUpform.get('password')?.invalid || signUpform.get('confirmPassword')?.value !== signUpform.get('password')?.value)">
+                                        Confirm password does not match with password.
+                                    </mat-error>
+                                </div>
+                            </form>
+                        </div>
+                
+                        <div class="btn-group mt-2">
+                            <div>
+                                <button mat-raised-button color="primary" class="signup-btn primary-btn" (click)="onSignUpClick()">
+                                    <a>
+                                        <span>Sign Up</span>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                
+                        <div class="login-info-wrap">
+                            <span>Already have an account? <span (click)="redrirectToLogin()">Login Here</span></span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+   
+        <div class="col-md-6">
+            <div class="register-bg">
+                    <div class="community-box">
+                        <div class="box-img">
+                            <img src="../../../assets/images/OBJECTS.svg" alt="">
+                        </div>
+
+                        <h5>Community of the world of Gaming</h5>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, at incidunt facilis possimus fugiat laudantium vitae, distinctio sit reprehenderit error repellat quibusdam repudiandae animi? Dolorem sequi hic expedita totam ex.</p>
+                        <button mat-raised-button color="primary" class="know-more-btn primary-btn">
+                            <a>
+                                <span>Know More</span>
+                            </a>
+                        </button>
+                        <!-- <button class="primary-btn know-more-btn">Know More</button> -->
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="loading" class="overlay"></div>
+<div *ngIf="loading" class="loader">
+    <mat-spinner class="spinner" diameter="40" mode="indeterminate"></mat-spinner>
+    <span class="loading-text">Loading...</span>
+</div>
